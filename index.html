@@ -14,12 +14,12 @@
     <div id="elevatorStatusContainer" class="mb-4">
       <h2>Elevator Status:</h2>
       <p>Loading...</p>
+      <button onclick="fetchElevatorStatus()" class="btn btn-primary mt-3">Refresh Elevator Status</button>
     </div>
 
     <!-- Train Departures Section -->
     <div>
       <h2 class="mb-3">Check Real-Time Departures</h2>
-
       <label for="stationSelect" class="form-label">Select a BART Station:</label>
       <select id="stationSelect" class="form-select mb-4" onchange="fetchDepartures(this.value)">
         <option value="">Select a station...</option>
@@ -94,43 +94,4 @@
         .catch(error => {
           console.error('Error fetching elevator status:', error);
           const elevatorStatusContainer = document.getElementById('elevatorStatusContainer');
-          elevatorStatusContainer.innerHTML = `<h2>Elevator Status:</h2><p>Failed to retrieve elevator status.</p>`;
-        });
-    }
-
-    function fetchDepartures(station) {
-      const apiKey = "MW9S-E7SL-26DU-VV8V";
-      const apiUrl = `https://api.bart.gov/api/etd.aspx?cmd=etd&orig=${station}&key=${apiKey}&json=y`;
-
-      fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-          const departuresContainer = document.getElementById('departuresContainer');
-          const etd = data.root.station[0].etd;
-
-          if (etd && etd.length > 0) {
-            let html = `<h3>Next Departures from ${data.root.station[0].name}</h3>`;
-            html += '<ul>';
-            etd.forEach(train => {
-              html += `<li>${train.destination}: ${train.estimate[0].minutes} minutes</li>`;
-            });
-            html += '</ul>';
-            departuresContainer.innerHTML = html;
-          } else {
-            departuresContainer.innerHTML = `<p>No departures available for ${data.root.station[0].name}</p>`;
-          }
-        })
-        .catch(error => {
-          console.error('Error fetching train departures:', error);
-          const departuresContainer = document.getElementById('departuresContainer');
-          departuresContainer.innerHTML = `<p>Failed to retrieve train departures.</p>`;
-        });
-    }
-
-    // Fetch elevator status and train departures on page load
-    window.addEventListener('load', () => {
-      fetchElevatorStatus(); // Fetch elevator status
-    });
-  </script>
-</body>
-</html>
+          elevatorStatusContainer.innerHTML = `<h2>Elevator Status:</h2><p>Failed to retrieve elevator status

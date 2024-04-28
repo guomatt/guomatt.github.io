@@ -18,12 +18,61 @@
 
     <!-- Train Departures Section -->
     <div>
+      <h2 class="mb-3">Check Real-Time Departures</h2>
+
       <label for="stationSelect" class="form-label">Select a BART Station:</label>
       <select id="stationSelect" class="form-select mb-4" onchange="fetchDepartures(this.value)">
         <option value="">Select a station...</option>
-        <option value="RICH">Richmond</option>
+        <option value="12TH">12th St. Oakland City Center</option>
+        <option value="16TH">16th St. Mission (SF)</option>
+        <option value="19TH">19th St. Oakland</option>
+        <option value="24TH">24th St. Mission (SF)</option>
+        <option value="ASHB">Ashby (Berkeley)</option>
+        <option value="ANTC">Antioch</option>
+        <option value="BALB">Balboa Park (SF)</option>
+        <option value="BAYF">Bay Fair (San Leandro)</option>
+        <option value="BERY">Berryessa / North San Jose</option>
+        <option value="CAST">Castro Valley</option>
+        <option value="CIVC">Civic Center (SF)</option>
+        <option value="COLS">Coliseum</option>
+        <option value="COLM">Colma</option>
+        <option value="CONC">Concord</option>
+        <option value="DALY">Daly City</option>
+        <option value="DBRK">Downtown Berkeley</option>
+        <option value="DUBL">Dublin/Pleasanton</option>
+        <option value="DELN">El Cerrito del Norte</option>
+        <option value="PLZA">El Cerrito Plaza</option>
+        <option value="EMBR">Embarcadero (SF)</option>
+        <option value="FRMT">Fremont</option>
+        <option value="FTVL">Fruitvale (Oakland)</option>
+        <option value="GLEN">Glen Park (SF)</option>
+        <option value="HAYW">Hayward</option>
+        <option value="LAFY">Lafayette</option>
+        <option value="LAKE">Lake Merritt (Oakland)</option>
+        <option value="MCAR">MacArthur (Oakland)</option>
         <option value="MLBR">Millbrae</option>
-        <!-- Add more options for other BART stations here -->
+        <option value="MLPT">Milpitas</option>
+        <option value="MONT">Montgomery St. (SF)</option>
+        <option value="NBRK">North Berkeley</option>
+        <option value="NCON">North Concord/Martinez</option>
+        <option value="OAKL">Oakland Int'l Airport</option>
+        <option value="ORIN">Orinda</option>
+        <option value="PITT">Pittsburg/Bay Point</option>
+        <option value="PCTR">Pittsburg Center</option>
+        <option value="PHIL">Pleasant Hill</option>
+        <option value="POWL">Powell St. (SF)</option>
+        <option value="RICH">Richmond</option>
+        <option value="ROCK">Rockridge (Oakland)</option>
+        <option value="SBRN">San Bruno</option>
+        <option value="SFIA">San Francisco Int'l Airport</option>
+        <option value="SANL">San Leandro</option>
+        <option value="SHAY">South Hayward</option>
+        <option value="SSAN">South San Francisco</option>
+        <option value="UCTY">Union City</option>
+        <option value="WARM">Warm Springs/South Fremont</option>
+        <option value="WCRK">Walnut Creek</option>
+        <option value="WDUB">West Dublin</option>
+        <option value="WOAK">West Oakland</option>
       </select>
 
       <div id="departuresContainer"></div>
@@ -74,16 +123,14 @@
         .catch(error => {
           console.error('Error fetching train departures:', error);
           const departuresContainer = document.getElementById('departuresContainer');
-          departuresContainer.innerHTML = `<p>Error fetching train departures. Please try again.</p>`;
+          departuresContainer.innerHTML = `<p>Failed to retrieve train departures.</p>`;
         });
     }
 
-    // Call functions when the page is loaded
+    // Fetch elevator status and train departures on page load
     window.addEventListener('load', () => {
-      fetchElevatorStatus(); // Fetch elevator status on page load
+      fetchElevatorStatus(); // Fetch elevator status
     });
   </script>
-
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

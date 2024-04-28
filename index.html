@@ -21,7 +21,7 @@
               <a class="nav-link" href="index.html">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="index.html#elevator-status">Check Elevator Status</a>
+              <a class="nav-link" href="#elevator-status">Check Elevator Status</a>
             </li>
           </ul>
         </div>
@@ -57,19 +57,24 @@
     // Construct the API URL with the API key
     const apiUrl = `https://api.bart.gov/api/bsa.aspx?cmd=elev&key=${apiKey}&json=y`;
 
-    // Fetch data from the API and display elevator status
-    fetch(apiUrl)
-      .then(response => response.json())
-      .then(data => {
-        const elevatorStatusElement = document.getElementById('elevator-status');
-        const statusMessage = data.root.bsa[0].description; // Assuming elevator status is provided as a description
-        elevatorStatusElement.innerHTML = `<h2>Elevator Status:</h2><p>${statusMessage}</p>`;
-      })
-      .catch(error => {
-        console.error('Error fetching elevator status:', error);
-        const elevatorStatusElement = document.getElementById('elevator-status');
-        elevatorStatusElement.innerHTML = `<h2>Elevator Status:</h2><p>Failed to retrieve elevator status.</p>`;
-      });
+    // Function to display elevator status
+    function displayElevatorStatus() {
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          const elevatorStatusElement = document.getElementById('elevator-status');
+          const statusMessage = data.root.bsa[0].description; // Assuming elevator status is provided as a description
+          elevatorStatusElement.innerHTML = `<h2>Elevator Status:</h2><p>${statusMessage}</p>`;
+        })
+        .catch(error => {
+          console.error('Error fetching elevator status:', error);
+          const elevatorStatusElement = document.getElementById('elevator-status');
+          elevatorStatusElement.innerHTML = `<h2>Elevator Status:</h2><p>Failed to retrieve elevator status.</p>`;
+        });
+    }
+
+    // Call displayElevatorStatus function when the page is loaded
+    window.addEventListener('load', displayElevatorStatus);
   </script>
 </body>
 </html>

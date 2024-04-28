@@ -35,13 +35,13 @@
       <button onclick="fetchElevatorStatus()" class="btn btn-primary mt-3">Refresh Elevator Status</button>
     </div>
 
-    <!-- Check Real-Time Departures Section -->
+    <!-- Train Departures Section -->
     <div>
       <h2 class="mb-3">Check Real-Time Departures</h2>
       <label for="stationSelect" class="form-label">Select a BART Station:</label>
       <select id="stationSelect" class="form-select mb-4" onchange="fetchDepartures(this.value)">
         <option value="">Select a station...</option>
-        <!-- Add options for all BART stations with their abbreviations -->
+        <!-- Populate options for all BART stations -->
         <option value="12th">12th St. Oakland City Center</option>
         <option value="16th">16th St. Mission (SF)</option>
         <option value="19th">19th St. Oakland</option>
@@ -164,6 +164,22 @@
         hour12: true
       });
     }
+
+    // Populate the dropdown with all BART stations
+    const stationSelect = document.getElementById('stationSelect');
+    const stations = [
+      { value: "12th", name: "12th St. Oakland City Center" },
+      { value: "16th", name: "16th St. Mission (SF)" },
+      { value: "19th", name: "19th St. Oakland" },
+      // Add more stations here
+    ];
+
+    stations.forEach(station => {
+      const option = document.createElement('option');
+      option.value = station.value;
+      option.textContent = station.name;
+      stationSelect.appendChild(option);
+    });
 
     // Initial fetches
     fetchElevatorStatus();

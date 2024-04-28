@@ -3,41 +3,88 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BART Elevator Status</title>
+  <title>BART Status</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css">
 </head>
 <body>
-  <div class="container mt-5 text-center">
-    <h1>BART Elevator Status</h1>
-    <p>This website displays the current elevator status for BART stations.</p>
-    <button class="btn btn-primary" onclick="checkElevatorStatus()">Check Elevator Status</button>
-    <div id="elevatorStatus" class="mt-3"></div>
+  <div class="container mt-5">
+    <h1 class="text-center mb-4">BART Status</h1>
+    
+    <!-- Section for Elevator Status -->
+    <div id="elevatorStatusContainer">
+      <h2>Elevator Status:</h2>
+      <p>Loading...</p>
+    </div>
+    
+    <hr>
+    
+    <!-- Section for Train Departures -->
+    <div>
+      <label for="stationSelect" class="form-label">Select a BART Station:</label>
+      <select id="stationSelect" class="form-select" onchange="fetchDepartures(this.value)">
+        <option value="">Select a station...</option>
+        <option value="12th">12th St. Oakland City Center</option>
+        <option value="16th">16th St. Mission (SF)</option>
+        <option value="19th">19th St. Oakland</option>
+        <!-- Add more options for other BART stations here -->
+      </select>
+    </div>
+    
+    <div id="departuresContainer"></div>
   </div>
 
   <script>
-    function checkElevatorStatus() {
+    function fetchElevatorStatus() {
       const apiKey = "MW9S-E7SL-26DU-VV8V";
-      const apiUrl = `https://api.bart.gov/api/bsa.aspx?cmd=elev&json=y&key=${apiKey}`;
+      const elevatorUrl = `https://api.bart.gov/api/bsa.aspx?cmd=elev&key=${apiKey}&json=y`;
+
+      fetch(elevatorUrl)
+        .then(response => response.json())
+        .then(data => {
+          const elevatorStatusContainer = document.getElementById('elevatorStatusContainer');
+          const statusMessage = data.root.bsa[0].description['#cdata-section'];
+          elevatorStatusContainer.innerHTML = `<h2>Elevator Status:</h2><p>${statusMessage}</p>`;
+        })
+        .catch(error => {
+          console.error('Error fetching elevator status:', error);
+          const elevatorStatusContainer = document.getElementById('elevatorStatusContainer');
+          elevatorStatusContainer.innerHTML = `<h2>Elevator Status:</h2><p>Failed to retrieve elevator status.</p>`;
+        });
+    }
+
+    function fetchDepartures(station) {
+      const apiKey = "MW9S-E7SL-26DU-VV8V";
+      const apiUrl = `https://api.bart.gov/api/etd.aspx?cmd=etd&orig=${station}&key=${apiKey}&json=y`;
 
       fetch(apiUrl)
         .then(response => response.json())
         .then(data => {
-          const elevatorStatusElement = document.getElementById('elevatorStatus');
-          const allElevatorStatus = data.root.bsa;
+          const departuresContainer = document.getElementById('departuresContainer');
+          const etd = data.root.station[0].etd;
 
-          if (allElevatorStatus.length > 0) {
-            const message = allElevatorStatus[0].description['#cdata-section'];
-            elevatorStatusElement.innerHTML = `<p><strong>Elevator Status:</strong> ${message}</p>`;
+          if (etd && etd.length > 0) {
+            let html = `<h3>Next Departures from ${data.root.station[0].name}</h3>`;
+            html += '<ul>';
+            etd.forEach(train => {
+              html += `<li>${train.destination}: ${train.estimate[0].minutes} minutes</li>`;
+            });
+            html += '</ul>';
+            departuresContainer.innerHTML = html;
           } else {
-            elevatorStatusElement.innerHTML = `<p><strong>Elevator Status:</strong> No information available.</p>`;
+            departuresContainer.innerHTML = `<p>No departures available for ${data.root.station[0].name}</p>`;
           }
         })
         .catch(error => {
-          console.error('Error fetching elevator status:', error);
-          const elevatorStatusElement = document.getElementById('elevatorStatus');
-          elevatorStatusElement.innerHTML = `<p><strong>Elevator Status:</strong> Failed to retrieve status.</p>`;
+          console.error('Error fetching train departures:', error);
+          const departuresContainer = document.getElementById('departuresContainer');
+          departuresContainer.innerHTML = `<p>Error fetching train departures. Please try again.</p>`;
         });
     }
+
+    // Call functions when the page is loaded
+    window.addEventListener('load', () => {
+      fetchElevatorStatus(); // Fetch elevator status on page load
+    });
   </script>
 
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>

@@ -52,7 +52,7 @@
   <!-- Your JavaScript code to fetch and display elevator status -->
   <script>
     // Fetch elevator status using BART API
-    const MW9S-E7SL-26DU-VV8V = "MW9S-E7SL-26DU-VV8V"; // Replace with your actual API key
+    const apiKey = "MW9S-E7SL-26DU-VV8V"; // Replace with your actual API key
 
     // Construct the API URL with the API key
     const apiUrl = `https://api.bart.gov/api/bsa.aspx?cmd=elev&key=${MW9S-E7SL-26DU-VV8V}&json=y`;
@@ -63,7 +63,7 @@
         .then(response => response.json())
         .then(data => {
           const elevatorStatusElement = document.getElementById('elevator-status');
-          const statusMessage = data.root.bsa[0].description; // Assuming elevator status is provided as a description
+          const statusMessage = data.root.bsa[0].description['#cdata-section']; // Accessing the CDATA section of the description
           elevatorStatusElement.innerHTML = `<h2>Elevator Status:</h2><p>${statusMessage}</p>`;
         })
         .catch(error => {

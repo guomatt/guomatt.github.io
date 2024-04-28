@@ -41,7 +41,7 @@
       <label for="stationSelect" class="form-label">Select a BART Station:</label>
       <select id="stationSelect" class="form-select mb-4" onchange="fetchDepartures(this.value)">
         <option value="">Select a station...</option>
-        <!-- Populate options for all BART stations -->
+        <!-- Add all BART stations with their codes -->
         <option value="12th">12th St. Oakland City Center</option>
         <option value="16th">16th St. Mission (SF)</option>
         <option value="19th">19th St. Oakland</option>
@@ -164,22 +164,6 @@
         hour12: true
       });
     }
-
-    // Populate the dropdown with all BART stations
-    const stationSelect = document.getElementById('stationSelect');
-    const stations = [
-      { value: "12th", name: "12th St. Oakland City Center" },
-      { value: "16th", name: "16th St. Mission (SF)" },
-      { value: "19th", name: "19th St. Oakland" },
-      // Add more stations here
-    ];
-
-    stations.forEach(station => {
-      const option = document.createElement('option');
-      option.value = station.value;
-      option.textContent = station.name;
-      stationSelect.appendChild(option);
-    });
 
     // Initial fetches
     fetchElevatorStatus();
